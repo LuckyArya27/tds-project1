@@ -6,7 +6,7 @@ import csv
 
 load_dotenv()
 # GitHub API settings
-TOKEN = getenv("GITHUB_API_TOKEN")
+TOKEN = getenv("GITHUB_API_TOKEN") # Add your GitHub API token here or set it as an environment variable
 HEADERS = {
     "Authorization": f"token {TOKEN}"
 }
@@ -21,7 +21,7 @@ def get_users_in_bangalore(min_followers=100, per_page=30):
             f"{BASE_URL}/search/users",
             headers=HEADERS,
             params={
-                "q": f"location:Bangalore followers:>{min_followers}",
+                "q": f"location:Bangalore+followers:>{min_followers}",
                 "per_page": per_page,
                 "page": page
             }
