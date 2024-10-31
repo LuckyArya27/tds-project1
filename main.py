@@ -82,24 +82,35 @@ def trim_company_name(company_name):
 def save_users_to_csv(users):
     print("Saving data to users.csv")
     with open("users.csv", mode="w", newline='', encoding="utf-8") as file:
-        writer = csv.writer(file)
         writer.writerow(["login", "name", "company", "location", "email", "hireable", "bio", "public_repos", "followers", "following", "created_at"])
+        writer = csv.writer(file)
         for user in users:
+            if user['hireable'] == True:
+                user['hireable'] = 'true'
+            elif user['hireable'] == False:
+                user['hireable'] = 'false'
             writer.writerow([user['login'], user['name'], user['company'], user['location'], user['email'], user['hireable'], user['bio'], user['public_repos'], user['followers'], user['following'], user['created_at']])
 
 # Save repositories data to repositories.csv
 def save_repositories_to_csv(repositories):
     print("Saving data to repositories.csv")
     with open("repositories.csv", mode="w", newline='', encoding="utf-8") as file:
-        writer = csv.writer(file)
         writer.writerow(["login", "full_name", "created_at", "stargazers_count", "watchers_count", "language", "has_projects", "has_wiki", "license_name"])
+        writer = csv.writer(file)
         for repo in repositories:
+            if repo['has_projects'] == True:
+                repo['has_projects'] = 'true'
+            elif repo['has_projects'] == False:
+                repo['has_projects'] = 'false'
+            if repo['has_wiki'] == True:
+                repo['has_wiki'] = 'true'
+            elif repo['has_wiki'] == False:
+                repo['has_wiki'] = 'false'
             writer.writerow([repo['owner']['login'], repo['full_name'], repo['created_at'], repo['stargazers_count'], repo['watchers_count'], repo['language'], repo['has_projects'], repo['has_wiki'], repo['license']['key'] if repo['license'] else ""])
 
 # Main function to gather and save data
 def main():
     users = get_users_in_bangalore()
-    count = 0
     all_repositories = []
     for user in users:
         username = user['login']
@@ -112,7 +123,6 @@ def main():
     save_users_to_csv(users)
     save_repositories_to_csv(all_repositories)
     print("Data saved to users.csv and repositories.csv")
-
 
 if __name__ == "__main__":
     main()
